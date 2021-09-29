@@ -275,7 +275,12 @@ func main() {
 		return
 	}
 	connDuration := time.Since(connStart)
-	defer conn.Close()
+	defer func() {
+		// Workaround to prevent transport: http2Server.HandleStreams failed to read frame issue
+		// https://github.com/grpc-ecosystem/grpc-health-probe/issues/34
+		time.Sleep(time.Millisecond)
+		conn.Close()
+	}()
 	if flVerbose {
 		log.Printf("connection established (took %v)", connDuration)
 	}
