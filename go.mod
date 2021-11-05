@@ -1,4 +1,4 @@
-module github.com/grpc-ecosystem/grpc-health-probe
+module github.com/mx51/grpc-health-probe
 
 require (
 	github.com/spiffe/go-spiffe/v2 v2.0.0-beta.8
