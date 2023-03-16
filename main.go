@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//	http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -291,7 +291,7 @@ func main() {
 	defer func() {
 		// Workaround to prevent transport: http2Server.HandleStreams failed to read frame issue
 		// https://github.com/grpc-ecosystem/grpc-health-probe/issues/34
-		time.Sleep(time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		conn.Close()
 	}()
 	if flVerbose {
@@ -304,7 +304,8 @@ func main() {
 	rpcCtx = metadata.NewOutgoingContext(rpcCtx, flRPCHeaders.MD)
 	resp, err := healthpb.NewHealthClient(conn).Check(rpcCtx,
 		&healthpb.HealthCheckRequest{
-			Service: flService})
+			Service: flService,
+		})
 	if err != nil {
 		if stat, ok := status.FromError(err); ok && stat.Code() == codes.Unimplemented {
 			log.Printf("error: this server does not implement the grpc health protocol (grpc.health.v1.Health): %s", stat.Message())
